@@ -1,0 +1,298 @@
+<!-- The <html lang=”en'> only specifies the language code of the page meaning en or
+English is used for all the text on the page. simplifies the interactions between an HTML/CSS document -->
+<html lang="en">
+
+<!-- The <head> tag in HTML is used to define the head portion of the document which contains information
+ related to the document. The <head> tag contains other head elements such as <title>, <meta>, <link>, <style> <link>-->
+<head>
+
+    <!-- The charset attribute specifies the character encoding for the HTML document. The HTML5
+    specification encourages web developers to use the UTF-8 character set, which covers almost
+    all of the characters and symbols in the world! -->
+    <meta charset="UTF-8">
+
+    <!-- X-UA-Compatible is a document mode meta tag that allows web authors to choose what version
+     of Internet Explorer the page should be rendered as. It is used by Internet Explorer 8 to specify
+      whether a page should be rendered as IE 7 (compatibility view) or IE 8 (standards view). -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- What is width device width in HTML?
+    The width=device-width part sets the width of the page to follow the screen-width of the device
+    (which will vary depending on the device). The initial-scale=1.0 part sets the initial zoom level
+    when the page is first loaded by the browser. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fontawesome Cdn link, just put this link and start to use fontawesome icons, its fontawesome 4.7.0 version -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- This name display on your browser tab -->
+    <title>Shopping App</title>
+
+    <!-- This is external css link where we add our all styling -->
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- Its vue3 online cdn link -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+<body>
+
+<!-- Vue only works in this div because we mount mount('#Box') this div initially for vue -->
+<div id="Box">
+    <br><br>
+    <!-- this page link visible when user cart minimum upto 3 items -->
+    <br><br>
+    <div class="main-wrapper">
+        <div class="lesson-card-wrapper">
+            <!--  use v for loop to loop through lesson array, index is, 0,1,2,3,4, :key="index" assign a unique number to each product -->
+            <div class="lesson-card" v-for="(item, index) in lessons" :key="index">
+                <div class="box-img"><i :class="item.image" style="font-size:48px;"></i></div>
+                <p>Subject: {{item.Subject}}</p>
+                <p>Location: {{item.Location}}</p>
+                <p>Price: {{item.Price}}</p>
+                <p>Stock: {{item.Stock}}</p>
+                <!-- onclick we call function AddBasket and pass object to this parameter, and access this parameter in function and
+                 save it in localstorage-->
+                <button v-on:click="AddBasket(item)" v-bind:disabled="item.Stock == 0">
+                    <span v-if="item.Stock <= 0">Out Of Stock</span>
+                    <span v-else>Add to Cart</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <div v-if="this.Basket.length > 3">
+        <button class="btn-checkout" @click="isShowProducts = !isShowProducts">shopping cart</button>
+    </div>
+    <br><br>
+
+    <div class="main-wrapper" id="show-products" :class="{ 'active' : isShowProducts }">
+        <div class="shopping-cart"><br>
+
+            <!-- v-model get anything that user enter in input and assign to searchString variable -->
+            <input type="text" v-model="searchString" placeholder="Filter" /> <br>
+            <div class="bbb"> <br>
+                <!-- sortKey = 'SUBJECT' when user press this button then 'SUBJECT' pass to the js sort function
+                 , the function validate and sort products by SUBJECT, below same working for other options     -->
+                <button @click="sortKey = 'SUBJECT'">Subject</button>
+                <button @click="sortKey = 'LOCATION'">Location</button>
+                <button @click="sortKey = 'PRICE'">price</button>
+            </div><br><br>
+            <div class="lesson-card-wrapper">
+                <!--  use v for loop to loop through sortedItems array, index is, 0,1,2,3,4, :key="index" assign a unique number to each product -->
+                <div class="lesson-card" v-for="(items, index) in sortedItems" :key="index">
+                    <div class="box-img"><i :class="items.IMAGE" style="font-size:48px;"></i></div>
+                    <p>Subject: {{items.SUBJECT}}</p>
+                    <p>Location: {{items.LOCATION}}</p>
+                    <p>Price: {{items.PRICE}}</p>
+                    <!-- removeProduct when user click on this function, this function get clicked array object id and pass to function
+                     the function detect which object clicked and remove specific object from array-->
+                    <button @click="removeProduct(index)">
+                        <span>Remove</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="checkout">
+            <input type="text" placeholder="Your name" v-model="userName">
+            <input type="text" placeholder="Your Phone" v-model="userPhone">
+            <!-- isCheckout active by default bcz I added css if this button have class active then this button
+             not clickable and have disable background, when validation true then I just removed class active
+             and button working fine-->
+            <button class="btn-checkout" :class="{'active' : isCheckout}" @click="validateCheckout()">Checkout</button>
+        </div>
+    </div>
+
+    <div class="modal-wrapper" id="popup">
+        <div class="modal">
+            <!-- closePopup on click this function just remove 'open' class from popup and popup close -->
+            <div class="btn-close" @click="closePopup"></div>
+            <div class="clear"></div>
+            <div class="content">
+                <p>the order has been submitted</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<Script type="module">
+    import {lessons} from './js/main.js'
+
+    const StorageKey = "Basket";
+    const {createApp} = Vue
+    createApp({
+        data() {
+            return {
+                // This array we use for localstorage to store product items
+                Basket: [],
+                lessons: lessons,
+
+                // this var get array from localstorage and save it
+                getProducts: '',
+
+                // useed to search products
+                searchString: "",
+
+                // use to sort data
+                sortKey: '',
+
+                // get data from getproducts var and show them
+                displayProducts: [],
+
+                // user name
+                userName: '',
+
+                userPhone: '',
+
+                // use to store that the number entered by the user is valid or not, it store true or false
+                verifyNumber: '',
+
+                // use to store that the name entered by the user is valid or not, it store true or false
+                verifyName: '',
+
+                // if both user name and number true then this will be false, when false then the active class remove from
+                // button and button is available to click
+                isCheckout: true,
+
+                isShowProducts: false,
+            }
+        },
+        create() {
+            // Get products from local storage and store it into variable
+            this.Basket = JSON.parse(localStorage.getItem(StorageKey) || '[]');
+        },
+        methods: {
+            // AddBasket() : this function add product to localstorage
+            AddBasket(get) {
+                this.Basket.push({
+                    SUBJECT: get.Subject,
+                    LOCATION: get.Location,
+                    PRICE: get.Price,
+                    IMAGE: get.image
+                }),
+                    get.Stock--
+
+                // setItem is used to store set(save) data to local storage
+                localStorage.setItem(StorageKey, JSON.stringify(this.Basket));
+                this.displayProducts = [];
+                this.getProduct();
+            },
+
+
+            // on checkout click this function call and add class to popup,
+            // the open class show the popup if we remove class open the popup will close
+            validateCheckout(){
+                document.getElementById("popup").classList.add("open");
+            },
+            // onclick popup cross icon remove class open from popup to close the popup
+            closePopup(){
+                document.getElementById("popup").classList.remove("open")
+            },
+            getProduct() {
+                // first get products from local storage and then assign localstorage array to getproduct var
+                this.getProducts = JSON.parse(window.localStorage.getItem('Basket'));
+
+                // here we loop through getProducts var and assign(push) all array to displayProducts array var
+                for (var i = 0; i < this.getProducts.length; i++) {
+                    this.displayProducts.push(this.getProducts[i]);
+                    console.log(this.displayProducts)
+
+                }
+            },
+
+            // onclick remove button we pass the index of the product in function and access here through parameter
+            // splice is predefined function to remove item from array we just pass the index number to slide and second
+            // second parameter of slice means how much products you want to remove in our case we remove only 1
+            removeProduct(index) {
+                // this will remove product from our screen
+                this.displayProducts.splice(index, 1);
+                console.log(index, "item.id")
+                //
+                // this will remove product from our localstorage
+                // first we get array from local stroge and assign it to var
+                // var ls_data = JSON.parse(localStorage.getItem('Basket'));
+                this.Basket = JSON.parse(localStorage.getItem('Basket'));
+                // here we pass the clicked product index number, with the help of index number
+                // we can identify whhich product user want to delete
+                this.Basket.splice(index, 1);
+                // when we delete any product then array update here need to set again updated array to localstorage
+                localStorage.setItem('Basket', JSON.stringify(this.Basket));
+                localStorage.setItem('Basket', JSON.stringify(this.Basket));
+                console.log(this.Basket);
+            },
+
+        },
+        mounted() {
+            // when page is load we get data from localstorage and assign it to this.basket array
+            this.Basket = JSON.parse(localStorage.getItem(StorageKey) || '[]');
+            console.log(this.Basket.length);
+            // when page load then our products should be load and show
+            this.getProduct();
+        },
+        computed: {
+            // this is a js sort method to sort item when we will click on like price sort button then this function
+            // check which value is greater then other or small the other, according to this he manage the data and sort
+            sortedItems: function () {
+                let searchString = this.searchString;
+                const sortedArray = this.displayProducts.sort((a, b) => {
+                    if (a[this.sortKey] < b[this.sortKey]) return -1
+                    if (a[this.sortKey] > b[this.sortKey]) return 1
+                    return 0
+                });
+                if (!searchString) {
+                    return sortedArray;
+                } else {
+                    // this line identify and our searcg input letter if uppercase it identify and convert it inro small case
+                    searchString = searchString.trim().toLowerCase();
+                    // here we search work by subject
+                    const search_array = sortedArray.filter((item) => {
+                        if (item.SUBJECT.toLowerCase().indexOf(searchString) !== -1) {
+                            // the final result return
+                            return item;
+                        }
+                    });
+                    return search_array;
+                }
+            },
+            Basket(){
+                return JSON.parse(localStorage.getItem(StorageKey) || '[]');
+            }
+        },
+        watch:{
+            // here we runtime check what user type in input field
+            userPhone(){
+
+                console.log(this.userPhone);
+                // its js regax pattern, it will check number is valid or not and number should be at least 10 digit and
+                // number should be valid and correct
+                let pattern = /^[62|0]+\d{10}/gi
+                // let phone = '087887242822'
+                // console.log(pattern.test(this.userPhone));
+                // pass user input number to this function, the number validate here and show trye or false
+                this.verifyNumber = pattern.test(this.userPhone)
+                // if both name and phone is valid then user will able to clivk on checkout button
+                if (this.verifyName === true && this.verifyNumber === true){
+                    this.isCheckout = false;
+                }
+                else {
+                    this.isCheckout = true;
+                }
+            },
+            userName(){
+                // same as it is above
+                this.verifyName = /^[a-zA-Z ]+$/.test(this.userName);
+                console.log(this.verifyName);
+                if (this.verifyName === true && this.verifyNumber === true){
+                    this.isCheckout = false;
+                }
+                else {
+                    this.isCheckout = true;
+                }
+            }
+        }
+    }).mount('#Box')
+
+</Script>
+</body>
+</html>

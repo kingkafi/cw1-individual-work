@@ -1,0 +1,188 @@
+#Box {
+    /*border: 1px solid;*/
+    /*height: 190px;*/
+    /*width: 300px;*/
+}
+.main-wrapper {
+}
+
+.lesson-card-wrapper {
+    display: grid;
+    grid-template-columns: repeat(6, 250px);
+    grid-gap: 30px;
+}
+.lesson-card {
+    display: block;
+    border: 1px solid black;
+    padding: 18px 12px;
+}
+.checkout{
+    padding: 60px 0 0;
+}
+.btn-checkout{
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    padding: 5px 20px;
+    border-radius: 5px;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
+}
+.btn-checkout.active{
+    user-select: none;
+    background: #6c757d;
+    pointer-events: none;
+}
+
+.btn-close {
+    cursor: pointer;
+    position: relative;
+    right: -5px;
+    top: 5px;
+    margin: 3px;
+    width: 20px;
+    height: 20px;
+    float: right;
+}
+.clear{
+    clear: both;
+}
+.btn-close::before,
+.btn-close::after {
+    content: '';
+    height: 2px;
+    display: block;
+    background: #d6d6d6;
+}
+
+.btn-close::before {
+    margin-top: 10px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.btn-close::after {
+    margin-top: -2px;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.btn-close:hover:after, .btn-close:hover:before {
+    background: #FF8CB4;
+}
+.modal-wrapper {
+    display: flex;
+// line-height: 125vh;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    background: rgba(25, 18, 12, 0.3);
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+
+}
+.modal-wrapper.open{
+    visibility: visible;
+    opacity: 1;
+    filter: alpha(opacity=1);
+}
+
+.modal {
+    padding-left: 15px;
+    padding-right: 15px;
+    display: inline-block;
+    height: 305px;
+    width: 470px;
+    position: relative;
+    margin: auto;
+    background: #e8e8e8;
+    background: -webkit-linear-gradient(bottom, #e8e8e8, #fff);
+    background: -o-linear-gradient(bottom, #e8e8e8, #fff);
+    background: linear-gradient(to top, #e8e8e8, #fff);
+    box-shadow: 0px 16px 16px -6px rgba(47, 46, 38, 0.5);
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    -ms-transform: scale(0.7); /* IE 9 */
+    -webkit-transform: scale(0.7); /* Safari */
+    transform: scale(0.7);
+}
+
+.modal-wrapper.open .modal {
+    opacity: 1;
+    filter: alpha(opacity=100);
+
+    -ms-transform: scale(1); /* IE 9 */
+    -webkit-transform: scale(1); /* Safari */
+    transform: scale(1);
+
+}
+
+.modal .content{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 100%;
+    text-align: center;
+}
+.modal .content p{
+    font-size: 20px;
+    color: black;
+    line-height: 30px;
+    font-weight: 600;
+    padding: 0 30px;
+}
+
+@media screen and (max-width: 425px){
+    .modal{
+        width: 100%;
+        height: 70%;
+        padding: 0;
+    }
+    .btn-close{
+        right: 5px;
+    }
+}
+
+
+#Box {
+    /*border: 1px solid;*/
+    /*height: 190px;*/
+    /*width: 300px;*/
+}
+.main-wrapper {
+}
+.lesson-card-wrapper {
+    display: grid;
+    grid-template-columns: repeat(6, 250px);
+    grid-gap: 30px;
+}
+.lesson-card {
+    display: block;
+    border: 1px solid black;
+    padding: 18px 12px;
+}
+
+#show-products{
+    display: none;
+}
+#show-products.active{
+    display: block;
+}

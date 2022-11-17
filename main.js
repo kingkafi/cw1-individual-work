@@ -5,7 +5,7 @@ export var lessons = [
     {
         Subject: 'Math',
         Location: 'London',
-        Price: '£130.00',
+        Price: '£140.00',
         Stock: 5,
 
         // I added font awesome cdn link, this is a font awesome icon name,

@@ -15,7 +15,7 @@ export var lessons = [
     {
         Subject: 'History',
         Location: 'Oxford',
-        Price: '£100.00',
+        Price: '£110.00',
         Stock: 5,
         image: 'fa fa-history',
     },

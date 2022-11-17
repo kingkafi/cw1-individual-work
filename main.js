@@ -22,7 +22,7 @@ export var lessons = [
     {
         Subject: 'English',
         Location: 'London',
-        Price: '£100.00',
+        Price: '£120.00',
         Stock: 5,
         image: 'fa fa-language',
     },

@@ -21,7 +21,7 @@ export var lessons = [
     },
     {
         Subject: 'English',
-        Location: 'London',
+        Location: 'Essex',
         Price: '£120.00',
         Stock: 5,
         image: 'fa fa-language',

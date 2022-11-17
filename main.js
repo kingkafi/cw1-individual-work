@@ -29,7 +29,7 @@ export var lessons = [
     {
         Subject: 'Science',
         Location: 'York',
-        Price: '£100',
+        Price: '£115',
         Stock: 5,
         image: 'fa fa-flask',
     },

@@ -5,11 +5,7 @@
     <meta charset="UTF-8">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <!-- What is width device width in HTML?
-    The width=device-width part sets the width of the page to follow the screen-width of the device
-    (which will vary depending on the device). The initial-scale=1.0 part sets the initial zoom level
-    when the page is first loaded by the browser. -->
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Fontawesome Cdn link, just put this link and start to use fontawesome icons, its fontawesome 4.7.0 version -->
@@ -68,6 +64,10 @@
                 <button @click="sortKey = 'SUBJECT'">Subject</button>
                 <button @click="sortKey = 'LOCATION'">Location</button>
                 <button @click="sortKey = 'PRICE'">price</button>
+                <button @click="ascend = !ascend">
+                    <i v-if="ascend">descend</i>
+                    <i v-else>ascend</i>
+                </button>
             </div><br><br>
             <div class="lesson-card-wrapper">
                 <!--  use v for loop to loop through sortedItems array, index is, 0,1,2,3,4, :key="index" assign a unique number to each product -->
@@ -144,6 +144,8 @@
                 // if both user name and number true then this will be false, when false then the active class remove from
                 // button and button is available to click
                 isCheckout: true,
+
+                ascend:true,
 
                 isShowProducts: false,
             }
@@ -230,6 +232,9 @@
                     if (a[this.sortKey] > b[this.sortKey]) return 1
                     return 0
                 });
+                if(!this.ascend){
+                    sortedArray.reverse()
+                }
                 if (!searchString) {
                     return sortedArray;
                 } else {
@@ -237,7 +242,7 @@
                     searchString = searchString.trim().toLowerCase();
                     // here we search work by subject
                     const search_array = sortedArray.filter((item) => {
-                        if (item.SUBJECT.toLowerCase().indexOf(searchString) !== -1) {
+                        if (item.SUBJECT.toLowerCase().indexOf(searchString) !== -1 || item.LOCATION.toLowerCase().indexOf(searchString) !== -1 ) {
                             // the final result return
                             return item;
                         }

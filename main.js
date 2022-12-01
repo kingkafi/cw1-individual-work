@@ -5,7 +5,7 @@ export var lessons = [
     {
         Subject: 'Math',
         Location: 'London',
-        Price: '£150.00',
+        Price: '£100.00',
         Stock: 5,
 
         // I added font awesome cdn link, this is a font awesome icon name,
@@ -15,21 +15,63 @@ export var lessons = [
     {
         Subject: 'History',
         Location: 'Oxford',
-        Price: '£110.00',
+        Price: '£100.00',
         Stock: 5,
         image: 'fa fa-history',
     },
     {
         Subject: 'English',
-        Location: 'Essex',
-        Price: '£120.00',
+        Location: 'London',
+        Price: '£100.00',
         Stock: 5,
         image: 'fa fa-language',
     },
     {
         Subject: 'Science',
         Location: 'York',
-        Price: '£115',
+        Price: '£80',
+        Stock: 5,
+        image: 'fa fa-flask',
+    },
+    {
+        Subject: 'Music',
+        Location: 'Bristol',
+        Price: '£90',
+        Stock: 5,
+        image: 'fa fa-music',
+    },
+    
+    {
+        Subject: 'Math',
+        Location: 'London',
+        Price: '£100.00',
+        Stock: 5,
+
+        // I added font awesome cdn link, this is a font awesome icon name,
+        // just paste icon name here the icon will appear in product
+        image: 'fa fa-calculator',
+    },
+    {
+        Subject: 'Math',
+        Location: 'London',
+        Price: '£100.00',
+        Stock: 5,
+
+        // I added font awesome cdn link, this is a font awesome icon name,
+        // just paste icon name here the icon will appear in product
+        image: 'fa fa-calculator',
+    },
+    {
+        Subject: 'English',
+        Location: 'London',
+        Price: '£100.00',
+        Stock: 5,
+        image: 'fa fa-language',
+    },
+    {
+        Subject: 'Science',
+        Location: 'York',
+        Price: '£80',
         Stock: 5,
         image: 'fa fa-flask',
     },
